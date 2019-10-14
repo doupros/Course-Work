@@ -5,8 +5,8 @@ using namespace std;
 struct node 
 {
 	int value;
-	struct node* left;
-	struct node* right;
+	struct node* left= NULL;
+	struct node* right = NULL;
 };
 
 struct node* root = NULL;
@@ -28,23 +28,24 @@ int main()
 	}
 	cout << endl;
 	print_tree(root);
+	terminate_tree(root);
 	return 0;
 }
 
 //void insert_integer(struct node** tree, int value)
 //{
-//	struct node* newnode = new struct node;
+//	 node* newnode = new struct node;
 //	(newnode)->value = value;
-//	(newnode)->left = (newnode)->right = null;
-//	if (root == null)
+//	(newnode)->left = (newnode)->right = NULL;
+//	if (root == NULL)
 //	{
 //		root = newnode;
 //	}
 //	else
 //	{
-//		node* back= null;
+//		node* back = nullptr;
 //		node* current = root;
-//		while (current != null)
+//		while (current != nullptr)
 //		{
 //			back = current;
 //			if (current->value > value)
@@ -59,21 +60,23 @@ int main()
 //			back->right = newnode;
 //	}
 //}
-
+//
 void insert_integer(struct node** tree, int value) 
 {
-	(*tree) = new node;
-	(*tree)->value = value;
-	(*tree)->left = (*tree)->right = NULL;
-	if (root==NULL)
+	if ((*tree) == NULL)
 	{
-		root = *tree;
+		(*tree) = new node;
+		(*tree)->value = value;
+		(*tree)->left = NULL;
+		(*tree)->right = NULL;
+		return;
 	}
+	if (value>(*tree)->value)
+		insert_integer(&(*tree)->right, value);
 	else
-	{
-
-	}
+		insert_integer(&(*tree)->left, value);
 }
+
 
 void print_tree(struct node* tree)
 {
@@ -87,5 +90,6 @@ void print_tree(struct node* tree)
 
 void terminate_tree(struct node* tree)
 {
-
+	delete tree;
+	tree = NULL;
 }
