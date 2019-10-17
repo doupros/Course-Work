@@ -1,16 +1,21 @@
 #include <fstream>
 #include "MoveBlank.h"
+#include <string>
+#include <vector>
 
 using namespace std;
 
-struct Numbers 
+
+struct Arrays
 {
 	int array[4][4];
-	int firstNum;
-	int secondNum;
 };
+int  num;
 
-void createArray() {};
+void createArray() 
+{
+	 
+}
 
 void fillAllCase() {};
 
@@ -39,9 +44,43 @@ void writeFile() {};
 
 void readFile() {};
 
-int main1()
+int main()
 {
 	int arr[4][4] = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,0} };
-	moveUp(arr, 4, 4);
-	printMap(arr, 4, 4);
+	createArray();
+	return 0;
+}
+
+vector<Arrays> Cases;
+
+bool check(Arrays arrays) 
+{
+	bool checkRepeat;
+	
+		for (int i = 0; i < Cases.size; i++)
+		{
+			for (int j = 0; j <16; j++)
+			{
+				if (arrays.array[][]== Cases.)
+				{
+
+				}
+			}
+		}
+	
+}
+
+int movement(int arr[4][4]) {
+	Arrays* UpSelArray = new Arrays;
+	moveUp(UpSelArray->array, 4, 4);
+	if (check(*UpSelArray))
+	{
+		Cases.push_back(*UpSelArray);
+	} 
+	else
+	{
+		delete UpSelArray;
+		UpSelArray = NULL;
+	}
+
 }
