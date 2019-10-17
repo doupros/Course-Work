@@ -7,15 +7,31 @@ using namespace std;
 
 const int global_number = 4;
 
+
 struct Arrays
 {
 	int array[global_number][global_number];
 };
-int  num;
+
+vector<Arrays> possiable_Cases;
+
 
 void createArray() 
 {
-	 
+	int num;
+	for (;;)
+	{
+		cout << "please input a number(1-20):" << endl;
+		cin >> num;
+		if (cin.fail() || num < 0 || num>20)
+		{
+			cin.clear();
+			cin.ignore(1024,'\n');
+		}
+		else
+		break;
+	}
+	cout << num;
 }
 
 void fillAllCase() {};
@@ -41,18 +57,34 @@ void printMap(int arr[global_number][global_number] , int column,int row)
 	cout << endl;
 };
 
-void writeFile() {};
+void writeFile() {
+	ofstream newfile;
+	newfile.open("texe.txt", ios::out);
+	for (size_t k = 0; k < possiable_Cases.size() ;k++)
+	{
+		for (int i = 0; i < global_number; i++)
+		{
+			for (int j = 0; j < global_number; j++)
+			{
+				if (possiable_Cases[k].array[i][j]==0)
+				{
+					cout << " " << "\t";
+				}
+				else
+				{
+					cout << possiable_Cases[k].array[i][j]  << "\t";
+				}
+
+			}
+			cout << endl;
+		}
+		cout << endl;
+	}
+	newfile.close();
+
+};
 
 void readFile() {};
-
-int main()
-{
-	int arr[global_number][global_number] = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,0} };
-	createArray();
-	return 0;
-}
-
-vector<Arrays> possiable_Cases;
 
 bool check(Arrays arrays) 
 {
@@ -72,8 +104,7 @@ bool check(Arrays arrays)
 		}
 }
 
-
-void movement(int arr[4][4]) {
+void movement(int arr[global_number][global_number]) {
 	Arrays* Up_Seleted_Array = new Arrays;
 	moveUp(Up_Seleted_Array->array, global_number, global_number);
 	if (check(*Up_Seleted_Array))
@@ -123,4 +154,13 @@ void movement(int arr[4][4]) {
 		}
 
 
+}
+
+
+int main()
+{
+	int arr[global_number][global_number] = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,0} };
+
+	createArray();
+	return 0;
 }
