@@ -6,15 +6,89 @@
 using namespace std;
 
 const int global_number = 4;
+const int global_single_number = 16;
 
-
-struct Arrays
+class Arrays
 {
+public:
 	int array[global_number][global_number];
 };
 
 vector<Arrays> possiable_Cases;
 
+//int* inputArray() 
+//{
+//	int *array_from_input[global_number][global_number];
+//
+//	int inputed_number;
+//
+//	for (int i = 0; i < global_number; i++)
+//	{
+//		for (int j = 0; j < global_number; j++)
+//		{
+//			if (i == 3 && j == 3)
+//				return array_from_input[global_number][global_number];
+//			for (;;)
+//			{
+//				cout << "please input the No.(" << i+j << ") number of the array:" << endl;
+//				cin >> inputed_number;
+//				if (cin.fail() || inputed_number < 0 || inputed_number>20)
+//				{
+//					cin.clear();
+//					cin.ignore(1024, '\n');
+//				}
+//				else
+//				{
+//					array_from_input[i][j];
+//					break;
+//				}
+//			}
+//		}
+//	}
+//	return array_from_input[global_number][global_number];
+//}
+
+bool compaire_array_and_num(int* arr, int arr_length, int num)
+{
+	for (int i = 0; i < arr_length; i++)
+	{
+		if (arr[i] == num) return true;
+		else
+			continue;
+	}
+	return false;
+}
+
+
+int* inputArray() 
+{
+	int num;
+	int array[global_single_number];
+	for (int i = 0; i < global_single_number-1; i++)
+	{
+		for (;;)
+		{
+			cout << "please input the No.(" << i + 1 << ") number" << endl;
+			cin >> num;
+			if (cin.fail() || num <= 0 || num>20)
+			{
+				cin.clear();
+				cin.ignore(1024, '\n');
+				cout << "incorrect input, please input again!" << endl;
+			}
+			else if (compaire_array_and_num(array,global_single_number,num))
+			{
+				cout << "the number is already inputed, please input again!" << endl;
+			}
+			else {
+				array[i] = num;
+				break;
+			}
+		}
+	}
+	array[global_single_number-1] = 0;
+	return &array[global_single_number];
+}
 
 void createArray() 
 {
@@ -32,6 +106,7 @@ void createArray()
 		break;
 	}
 	cout << num;
+
 }
 
 void fillAllCase() {};
@@ -104,7 +179,8 @@ bool check(Arrays arrays)
 		}
 }
 
-void movement(int arr[global_number][global_number]) {
+void movement(int arr[global_number][global_number])
+{
 	Arrays* Up_Seleted_Array = new Arrays;
 	moveUp(Up_Seleted_Array->array, global_number, global_number);
 	if (check(*Up_Seleted_Array))
@@ -159,8 +235,9 @@ void movement(int arr[global_number][global_number]) {
 
 int main()
 {
-	int arr[global_number][global_number] = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,0} };
+	/*= { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,0} }*/;
 
-	createArray();
+	int* array = inputArray();
+
 	return 0;
 }
