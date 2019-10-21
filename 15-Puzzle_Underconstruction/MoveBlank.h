@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-
+#define NUMBER_GlOABL 4;
 
 void mySwap(int& a, int& b)
 {
@@ -12,7 +12,7 @@ void mySwap(int& a, int& b)
 
 void moveUp(int arr[4][4], int columnLength, int rowLength)
 {
-	int firstArrNum, secondArrNum;
+	int firstArrNum=NULL, secondArrNum=NULL;
 	for (int i = 0; i < rowLength; i++)
 	{
 		for (int j = 0; j < columnLength; j++)
@@ -35,7 +35,7 @@ void moveUp(int arr[4][4], int columnLength, int rowLength)
 
 void moveDown(int arr[4][4], int columnLength, int rowLength)
 {
-	int firstArrNum, secondArrNum;
+	int firstArrNum=NULL, secondArrNum=NULL;
 	for (int i = 0; i < rowLength; i++)
 	{
 		for (int j = 0; j < columnLength; j++)
@@ -58,7 +58,7 @@ void moveDown(int arr[4][4], int columnLength, int rowLength)
 
 void moveLeft(int arr[4][4], int columnLength, int rowLength)
 {
-	int firstArrNum, secondArrNum;
+	int firstArrNum=NULL, secondArrNum=NULL;
 	for (int i = 0; i < rowLength; i++)
 	{
 		for (int j = 0; j < columnLength; j++)
@@ -82,7 +82,7 @@ void moveLeft(int arr[4][4], int columnLength, int rowLength)
 
 void moveRight(int arr[4][4], int columnLength, int rowLength)
 {
-	int firstArrNum, secondArrNum;
+	int firstArrNum=NULL, secondArrNum=NULL;
 	for (int i = 0; i < rowLength; i++)
 	{
 		for (int j = 0; j < columnLength; j++)

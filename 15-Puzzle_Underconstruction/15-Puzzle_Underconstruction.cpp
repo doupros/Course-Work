@@ -2,19 +2,47 @@
 #include "MoveBlank.h"
 #include <string>
 #include <vector>
-
+#include <random>
+#include<math.h>
 using namespace std;
 
 const int global_number = 4;
 const int global_single_number = 16;
+const int sqrt_global_single_number = sqrt(global_single_number);
+random_device random_dev;
+mt19937 range(random_dev());
+uniform_int_distribution<mt19937::result_type>random_number(1, 20);
 
-class Arrays
+void print_single_map(int* array, int length);
+bool compare_array_and_num(int* arr, int arr_length, int num);
+int* random_array();
+int* bubbleSort(int* array, int length_of_array);
+int* inputArray();
+void swap_ref(int& x, int& y);
+void createArray();
+void printMap(int arr[global_number][global_number], int column, int row);
+void many_random_array(int number);
+void movement(int arr[global_number][global_number]);
+void move_single_up(int arr[], int length);
+void move_single_down(int arr[], int length);
+void move_single_left(int arr[], int length);
+void move_single_right(int arr[], int length);
+
+class Class_type_arrays
 {
 public:
 	int array[global_number][global_number];
 };
 
-vector<Arrays> possiable_Cases;
+vector<Class_type_arrays> possiable_Cases;
+
+struct struct_type_single_arrays 
+{
+	int array[global_single_number];
+};
+
+vector<struct_type_single_arrays> possiable_single_cases;
+
 
 //int* inputArray() 
 //{
@@ -48,7 +76,74 @@ vector<Arrays> possiable_Cases;
 //	return array_from_input[global_number][global_number];
 //}
 
-bool compaire_array_and_num(int* arr, int arr_length, int num)
+
+
+int main()
+{
+	/*	int array[4][4] = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,0} };*/
+	/*int array[] = { 6, 3, 4, 5, 1, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0 };*/
+	int* array = random_array();
+		
+	print_single_map(array, global_single_number);
+	move_single_up(array, global_single_number);
+	print_single_map(array, global_single_number);
+	move_single_left(array, global_single_number);
+	print_single_map(array, global_single_number);
+	move_single_down(array, global_single_number);
+	print_single_map(array, global_single_number);
+	move_single_right(array, global_single_number);
+	print_single_map(array, global_single_number);
+
+	int * array_inputed = inputArray();
+	print_single_map(array_inputed,global_single_number);
+
+	/*int* arrayptr;
+	arrayptr = random_array();
+	print_single_map(arrayptr, global_single_number);
+	int* arrptr1= bubbleSort(arrayptr, global_single_number);
+	print_single_map(arrptr1, global_single_number);
+
+	many_random_array(5);
+
+	int* array = inputArray();*/
+
+
+
+	return 0;
+}
+
+void many_random_array(int number) 
+{
+	cout << number << endl;
+	for (int i = 0; i < number; i++)
+	{
+		int* arrayptr = random_array();
+		print_single_map(arrayptr, global_single_number);
+	}
+}
+
+int* random_array() 
+{
+	static int array [global_single_number];
+	int num;
+	for (int i = 0; i < global_single_number-1; )
+	{
+		num = random_number(range);
+		if (compare_array_and_num(array,global_single_number,num))
+		{
+			continue;
+		}
+		else
+		{
+			array[i] = num;
+			i++;
+		}
+	}
+	array[global_single_number - 1] = 0;
+	return array;
+}
+
+bool compare_array_and_num(int* arr, int arr_length, int num)
 {
 	for (int i = 0; i < arr_length; i++)
 	{
@@ -59,16 +154,42 @@ bool compaire_array_and_num(int* arr, int arr_length, int num)
 	return false;
 }
 
+void swap_ref(int& x, int& y) {
+	int temp = x;
+	x = y;
+	y = temp;
+}
+
+int* bubbleSort(int* array,int length_of_array) 
+{
+	for (int i = 0; i < length_of_array-1; i++)
+	{
+		for (int j = 0; j < length_of_array-i-1; j++)
+		{
+			if (array[j]>array[j+1])
+			{
+				swap_ref(array[j], array[j + 1]);
+			}
+		}
+	}
+	static int array_after_sort[global_single_number];
+	for (int i = 0; i < global_single_number-1; i++)
+	{
+		array_after_sort[i] = array[i + 1];
+	}
+	array_after_sort[global_single_number - 1] = 0;
+	return array_after_sort;
+}
 
 int* inputArray() 
 {
 	int num;
-	int array[global_single_number];
+	int *array = new int[global_single_number];
 	for (int i = 0; i < global_single_number-1; i++)
 	{
 		for (;;)
 		{
-			cout << "please input the No.(" << i + 1 << ") number" << endl;
+			cout << "please input the No.(" << i + 1 << ") number(0-20)" << endl;
 			cin >> num;
 			if (cin.fail() || num <= 0 || num>20)
 			{
@@ -76,7 +197,7 @@ int* inputArray()
 				cin.ignore(1024, '\n');
 				cout << "incorrect input, please input again!" << endl;
 			}
-			else if (compaire_array_and_num(array,global_single_number,num))
+			else if (compare_array_and_num(array,global_single_number,num))
 			{
 				cout << "the number is already inputed, please input again!" << endl;
 			}
@@ -87,7 +208,7 @@ int* inputArray()
 		}
 	}
 	array[global_single_number-1] = 0;
-	return &array[global_single_number];
+	return array;
 }
 
 void createArray() 
@@ -95,9 +216,9 @@ void createArray()
 	int num;
 	for (;;)
 	{
-		cout << "please input a number(1-20):" << endl;
+		cout << "please input a number:" << endl;
 		cin >> num;
-		if (cin.fail() || num < 0 || num>20)
+		if (cin.fail() || num < 0)
 		{
 			cin.clear();
 			cin.ignore(1024,'\n');
@@ -105,8 +226,7 @@ void createArray()
 		else
 		break;
 	}
-	cout << num;
-
+	many_random_array( num);
 }
 
 void fillAllCase() {};
@@ -119,7 +239,7 @@ void printMap(int arr[global_number][global_number] , int column,int row)
 		{
 			if (arr[i][j] == 0)
 			{
-				cout << " " << "\t";
+				cout << "\t" << "\t";
 			}
 			else
 			{
@@ -131,6 +251,30 @@ void printMap(int arr[global_number][global_number] , int column,int row)
 	}
 	cout << endl;
 };
+
+void print_single_map(int* array, int length) 
+{
+	for (int i = 0; i < length; i++)
+	{
+		if (array[i]==0)
+		{
+			cout << " "<<"\t";
+			if (i== sqrt(global_single_number) -1||i== sqrt(global_single_number) *2-1||i== sqrt(global_single_number) *3-1||i== sqrt(global_single_number)*4-1)
+			{
+				cout << endl;
+			}
+		}
+		else if ((i + 1) % sqrt_global_single_number != 0)
+		{
+			cout << array[i] << "\t";
+		}
+		else
+		{
+			cout << array[i] << endl ;
+		}
+	}
+	cout << endl;
+}
 
 void writeFile() {
 	ofstream newfile;
@@ -161,9 +305,11 @@ void writeFile() {
 
 void readFile() {};
 
-bool check(Arrays arrays) 
+bool check(Class_type_arrays arrays) 
 {
 	bool checkRepeat;
+
+
 		for (int possiable_cases_size = 0; possiable_cases_size < possiable_Cases.size(); possiable_cases_size++)
 		{
 			for (int first_num_in_array = 0; first_num_in_array < global_number; first_num_in_array++)
@@ -181,7 +327,7 @@ bool check(Arrays arrays)
 
 void movement(int arr[global_number][global_number])
 {
-	Arrays* Up_Seleted_Array = new Arrays;
+	Class_type_arrays* Up_Seleted_Array = new Class_type_arrays;
 	moveUp(Up_Seleted_Array->array, global_number, global_number);
 	if (check(*Up_Seleted_Array))
 	{
@@ -193,7 +339,7 @@ void movement(int arr[global_number][global_number])
 		Up_Seleted_Array = NULL;
 	}
 
-	Arrays* Down_Seleted_Array = new Arrays;
+	Class_type_arrays* Down_Seleted_Array = new Class_type_arrays;
 	moveDown(Down_Seleted_Array->array, global_number, global_number);
 		if (check(*Down_Seleted_Array))
 		{
@@ -205,7 +351,7 @@ void movement(int arr[global_number][global_number])
 			Down_Seleted_Array = NULL;
 		}
 
-		Arrays* Left_Seleted_Array = new Arrays;
+		Class_type_arrays* Left_Seleted_Array = new Class_type_arrays;
 		moveDown(Left_Seleted_Array->array, global_number, global_number);
 		if (check(*Left_Seleted_Array))
 		{
@@ -217,7 +363,7 @@ void movement(int arr[global_number][global_number])
 			Left_Seleted_Array = NULL;
 		}
 
-		Arrays* Right_Seleted_Array = new Arrays;
+		Class_type_arrays* Right_Seleted_Array = new Class_type_arrays;
 		moveDown(Right_Seleted_Array->array, global_number, global_number);
 		if (check(*Right_Seleted_Array))
 		{
@@ -233,11 +379,127 @@ void movement(int arr[global_number][global_number])
 }
 
 
-int main()
+bool check_single(struct_type_single_arrays arrays)
 {
-	/*= { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,0} }*/;
+	for ( int i = 0; i < possiable_single_cases.size(); i++)
+	{
+		if (equal(begin(possiable_single_cases[i].array),end(possiable_single_cases[i].array),begin(arrays.array)))
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
-	int* array = inputArray();
+bool moveable(int zero_posiztion) 
+{
+	if (zero_posiztion < sqrt(global_single_number)||
+		zero_posiztion > sqrt(global_single_number)* (sqrt(global_single_number) - 1) - 1||
+		zero_posiztion == 0 * sqrt(global_single_number) || zero_posiztion == 1 * sqrt(global_single_number) || zero_posiztion == 2 * sqrt(global_single_number) || zero_posiztion == 3 * sqrt(global_single_number) ||
+		zero_posiztion == 1 * sqrt(global_single_number) - 1 || zero_posiztion == 2 * sqrt(global_single_number) - 1 || zero_posiztion == 3 * sqrt(global_single_number) - 1 || zero_posiztion == 4 * sqrt(global_single_number) - 1
+		)
+	{
+		return false;
+	}
+	else
+		return true;
+}
 
-	return 0;
+void move_single_up(int arr[],int length)
+{
+	int zero_posiztion=NULL;
+	for (int i = 0; i < length; i++)
+	{
+		if (arr[i] == 0)
+		{
+			zero_posiztion=i;
+		}
+	}
+	if (zero_posiztion < sqrt(global_single_number))
+	{
+		return;
+	}
+	else
+	{
+		mySwap(arr[zero_posiztion], arr[zero_posiztion-sqrt_global_single_number]);
+	}
+}
+
+void move_single_down(int arr[], int length)
+{
+	int zero_posiztion = NULL;
+	for (int i = 0; i < length; i++)
+	{
+		if (arr[i] == 0)
+		{
+			zero_posiztion = i;
+		}
+	}
+	if (zero_posiztion > sqrt(global_single_number)* (sqrt(global_single_number)-1)-1)
+	{
+		return;
+	}
+	else
+	{
+		mySwap(arr[zero_posiztion], arr[zero_posiztion + sqrt_global_single_number]);
+	}
+}
+
+void move_single_left(int arr[], int length)
+{
+	int zero_posiztion = NULL;
+	for (int i = 0; i < length; i++)
+	{
+		if (arr[i] == 0)
+		{
+			zero_posiztion = i;
+		}
+	}
+	if (zero_posiztion ==0* sqrt(global_single_number) || zero_posiztion == 1* sqrt(global_single_number) || zero_posiztion == 2* sqrt(global_single_number) || zero_posiztion == 3* sqrt(global_single_number))
+	{
+		return;
+	}
+	else
+	{
+		mySwap(arr[zero_posiztion], arr[zero_posiztion -1]);
+	}
+}
+
+void move_single_right(int arr[], int length)
+{
+	int zero_posiztion = NULL;
+	for (int i = 0; i < length; i++)
+	{
+		if (arr[i] == 0)
+		{
+			zero_posiztion = i;
+		}
+	}
+	if (zero_posiztion == 1* sqrt(global_single_number)-1 || zero_posiztion == 2* sqrt(global_single_number)-1 || zero_posiztion == 3* sqrt(global_single_number)-1 || zero_posiztion == 4* sqrt(global_single_number)-1)
+	{
+		return;
+	}
+	else
+	{
+		mySwap(arr[zero_posiztion], arr[zero_posiztion + 1]);
+	}
+}
+
+
+void movement_single(int arr[global_single_number]) 
+{
+	struct_type_single_arrays* Up_Selected_Array = new struct_type_single_arrays;
+	move_single_up(Up_Selected_Array->array, global_single_number);
+	{
+		if (check_single==false)
+		{
+			possiable_single_cases.push_back(*Up_Selected_Array);
+		}
+		else
+		{
+			delete Up_Selected_Array;
+			Up_Selected_Array = NULL;
+		}
+
+	};
 }
