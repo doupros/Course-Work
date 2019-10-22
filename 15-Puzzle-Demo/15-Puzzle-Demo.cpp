@@ -79,12 +79,11 @@ void PuzzleFile::read_from_file()
 	newfile.close();
 }
 
+CreateArray NewArray; PuzzleFile NewFile;
 
 int main()
 {
 	menu();
-
-	
 	return 0;
 }
 
@@ -108,48 +107,24 @@ int get_level()
 	}
 }
 
+
 void menu() 
 {
-	CreateArray NewArray; PuzzleFile NewFile;
-	cout << "*************************************************************" << endl;
-	cout << "***	1. input a 4*4 array manually***" << endl;
-	cout << "***	2. randomly create some array automaticlly***" << endl;
-	cout << "*************************************************************" << endl;
-	cout << "*************************************************************" << endl;
-	cout << "*************************************************************" << endl;
-
-	int num;
 	for (;;)
 	{
-		cout << "please input your choise" << endl;
-		cin >> num;
-		if (cin.fail() || num <= 0 || num > 4)
-		{
-			cin.clear();
-			cin.ignore(1024, '\n');
-			cout << "incorrect input, please input again!" << endl;
-		}
-		else break;
-	}
-	switch (num)
-	{
-	case	1:
-	{
-		int * array = NewArray.input_array();
-		NewArray.print_single_map(array, PUZZLESZE);
-		cout << "do you want to see the array you inputed?(Y/N)" << endl;
-		
-	}
+		cout << "*************************************************************" << endl;
+		cout << "***	1. input a 4*4 array manually***" << endl;
+		cout << "***	2. randomly create some array automaticlly***" << endl;
+		cout << "*************************************************************" << endl;
+		cout << "*************************************************************" << endl;
+		cout << "*************************************************************" << endl;
 
-	case 2: 
-	{
 		int num;
-		string input;
 		for (;;)
 		{
-			cout << "how many arrays do you want to create: " << endl;
+			cout << "please input your choise" << endl;
 			cin >> num;
-			if (cin.fail() || num <= 0 )
+			if (cin.fail() || num < 0 || num > 4)
 			{
 				cin.clear();
 				cin.ignore(1024, '\n');
@@ -157,27 +132,63 @@ void menu()
 			}
 			else break;
 		}
-		cout << "do you want to write them in a file?(Y/N)" << endl;
-		cin >> input;
-		if (input=="Y")
+		switch (num)
 		{
-			for (int i = 0; i < num; i++)
+		case 0:
+			exit(0);
+		case	1:
+		{
+			int* array = NewArray.input_array();
+			string input;
+			cout << "do you want to see the array you inputed?(Y/N)" << endl;
+			cin >> input;
+			if (input == "Y"||input=="y")
 			{
-				NewFile.write_in_file(NewArray.random_array(PUZZLESZE), PUZZLESZE * PUZZLESZE);
+				NewArray.print_single_map(array, PUZZLESZE);
+			}
+			else if (input=="N"||input=="n")
+			{
+				system("cls");
 			}
 		}
-		else if (input =="N")
+
+		case 2: 
 		{
-			for (int i = 0; i < num; i++)
+			int num;
+			string input;
+			for (;;)
 			{
-				cout << num << endl;
-				NewArray.print_single_map(NewArray.random_array(PUZZLESZE), PUZZLESZE);
+				cout << "how many arrays do you want to create: " << endl;
+				cin >> num;
+				if (cin.fail() || num <= 0 )
+				{
+					cin.clear();
+					cin.ignore(1024, '\n');
+					cout << "incorrect input, please input again!" << endl;
+				}
+				else break;
+			}
+			cout << "do you want to write them in a file?(Y/N)" << endl;
+			cin >> input;
+			if (input=="Y"||input=="y")
+			{
+				for (int i = 0; i < num; i++)
+				{
+					NewFile.write_in_file(NewArray.random_array(PUZZLESZE), PUZZLESZE * PUZZLESZE);
+				}
+			}
+			else if (input =="N"||input=="n")
+			{
+				for (int i = 0; i < num; i++)
+				{
+					cout << num << endl;
+					NewArray.print_single_map(NewArray.random_array(PUZZLESZE), PUZZLESZE);
+				}
 			}
 		}
-	}
-	
-	default:
-		break;
+		default:
+			break;
+		}
 	}
 	
 }
