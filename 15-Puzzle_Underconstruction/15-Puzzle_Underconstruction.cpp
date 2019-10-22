@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include<math.h>
+#include<set>
 using namespace std;
 
 const int global_number = 4;
@@ -22,11 +23,29 @@ void swap_ref(int& x, int& y);
 void createArray();
 void printMap(int arr[global_number][global_number], int column, int row);
 void many_random_array(int number);
-void movement(int arr[global_number][global_number]);
-void move_single_up(int arr[], int length);
-void move_single_down(int arr[], int length);
-void move_single_left(int arr[], int length);
-void move_single_right(int arr[], int length);
+void write_single_array_in_file(int* array, int length);
+void readFile();
+
+void sort_by_set(int* array, int length);
+
+class ClassUI
+{
+public:
+	ClassUI();
+	~ClassUI();
+	void mianpage();
+
+private:
+
+};
+
+ClassUI::ClassUI()
+{
+}
+
+ClassUI::~ClassUI()
+{
+}
 
 class Class_type_arrays
 {
@@ -82,21 +101,11 @@ int main()
 {
 	/*	int array[4][4] = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,0} };*/
 	/*int array[] = { 6, 3, 4, 5, 1, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0 };*/
+
 	int* array = random_array();
 		
 	print_single_map(array, global_single_number);
-	move_single_up(array, global_single_number);
-	print_single_map(array, global_single_number);
-	move_single_left(array, global_single_number);
-	print_single_map(array, global_single_number);
-	move_single_down(array, global_single_number);
-	print_single_map(array, global_single_number);
-	move_single_right(array, global_single_number);
-	print_single_map(array, global_single_number);
-
-	int * array_inputed = inputArray();
-	print_single_map(array_inputed,global_single_number);
-
+	sort_by_set(array, global_single_number);
 	/*int* arrayptr;
 	arrayptr = random_array();
 	print_single_map(arrayptr, global_single_number);
@@ -229,8 +238,6 @@ void createArray()
 	many_random_array( num);
 }
 
-void fillAllCase() {};
-
 void printMap(int arr[global_number][global_number] , int column,int row)
 {
 	for (int i = 0; i < row; i++)
@@ -276,35 +283,6 @@ void print_single_map(int* array, int length)
 	cout << endl;
 }
 
-void writeFile() {
-	ofstream newfile;
-	newfile.open("texe.txt", ios::out);
-	for (size_t k = 0; k < possiable_Cases.size() ;k++)
-	{
-		for (int i = 0; i < global_number; i++)
-		{
-			for (int j = 0; j < global_number; j++)
-			{
-				if (possiable_Cases[k].array[i][j]==0)
-				{
-					cout << " " << "\t";
-				}
-				else
-				{
-					cout << possiable_Cases[k].array[i][j]  << "\t";
-				}
-
-			}
-			cout << endl;
-		}
-		cout << endl;
-	}
-	newfile.close();
-
-};
-
-void readFile() {};
-
 bool check(Class_type_arrays arrays) 
 {
 	bool checkRepeat;
@@ -324,60 +302,6 @@ bool check(Class_type_arrays arrays)
 			}
 		}
 }
-
-void movement(int arr[global_number][global_number])
-{
-	Class_type_arrays* Up_Seleted_Array = new Class_type_arrays;
-	moveUp(Up_Seleted_Array->array, global_number, global_number);
-	if (check(*Up_Seleted_Array))
-	{
-		possiable_Cases.push_back(*Up_Seleted_Array);
-	} 
-	else
-	{
-		delete Up_Seleted_Array;
-		Up_Seleted_Array = NULL;
-	}
-
-	Class_type_arrays* Down_Seleted_Array = new Class_type_arrays;
-	moveDown(Down_Seleted_Array->array, global_number, global_number);
-		if (check(*Down_Seleted_Array))
-		{
-			possiable_Cases.push_back(*Down_Seleted_Array);
-		}
-		else
-		{
-			delete Down_Seleted_Array;
-			Down_Seleted_Array = NULL;
-		}
-
-		Class_type_arrays* Left_Seleted_Array = new Class_type_arrays;
-		moveDown(Left_Seleted_Array->array, global_number, global_number);
-		if (check(*Left_Seleted_Array))
-		{
-			possiable_Cases.push_back(*Left_Seleted_Array);
-		}
-		else
-		{
-			delete Left_Seleted_Array;
-			Left_Seleted_Array = NULL;
-		}
-
-		Class_type_arrays* Right_Seleted_Array = new Class_type_arrays;
-		moveDown(Right_Seleted_Array->array, global_number, global_number);
-		if (check(*Right_Seleted_Array))
-		{
-			possiable_Cases.push_back(*Right_Seleted_Array);
-		}
-		else
-		{
-			delete Right_Seleted_Array;
-			Right_Seleted_Array = NULL;
-		}
-
-
-}
-
 
 bool check_single(struct_type_single_arrays arrays)
 {
@@ -405,101 +329,80 @@ bool moveable(int zero_posiztion)
 		return true;
 }
 
-void move_single_up(int arr[],int length)
+void write_single_array_in_file(int* array, int length)
 {
-	int zero_posiztion=NULL;
+	ofstream newfile;
+	newfile.open("test.txt", ios::out);
 	for (int i = 0; i < length; i++)
 	{
-		if (arr[i] == 0)
+		if (array[i] == 0)
 		{
-			zero_posiztion=i;
+			newfile << " " << "\t";
+			if (i == sqrt(global_single_number) - 1 || i == sqrt(global_single_number) * 2 - 1 || i == sqrt(global_single_number) * 3 - 1 || i == sqrt(global_single_number) * 4 - 1)
+			{
+				newfile << endl;
+			}
 		}
-	}
-	if (zero_posiztion < sqrt(global_single_number))
-	{
-		return;
-	}
-	else
-	{
-		mySwap(arr[zero_posiztion], arr[zero_posiztion-sqrt_global_single_number]);
-	}
-}
-
-void move_single_down(int arr[], int length)
-{
-	int zero_posiztion = NULL;
-	for (int i = 0; i < length; i++)
-	{
-		if (arr[i] == 0)
+		else if ((i + 1) % sqrt_global_single_number != 0)
 		{
-			zero_posiztion = i;
-		}
-	}
-	if (zero_posiztion > sqrt(global_single_number)* (sqrt(global_single_number)-1)-1)
-	{
-		return;
-	}
-	else
-	{
-		mySwap(arr[zero_posiztion], arr[zero_posiztion + sqrt_global_single_number]);
-	}
-}
-
-void move_single_left(int arr[], int length)
-{
-	int zero_posiztion = NULL;
-	for (int i = 0; i < length; i++)
-	{
-		if (arr[i] == 0)
-		{
-			zero_posiztion = i;
-		}
-	}
-	if (zero_posiztion ==0* sqrt(global_single_number) || zero_posiztion == 1* sqrt(global_single_number) || zero_posiztion == 2* sqrt(global_single_number) || zero_posiztion == 3* sqrt(global_single_number))
-	{
-		return;
-	}
-	else
-	{
-		mySwap(arr[zero_posiztion], arr[zero_posiztion -1]);
-	}
-}
-
-void move_single_right(int arr[], int length)
-{
-	int zero_posiztion = NULL;
-	for (int i = 0; i < length; i++)
-	{
-		if (arr[i] == 0)
-		{
-			zero_posiztion = i;
-		}
-	}
-	if (zero_posiztion == 1* sqrt(global_single_number)-1 || zero_posiztion == 2* sqrt(global_single_number)-1 || zero_posiztion == 3* sqrt(global_single_number)-1 || zero_posiztion == 4* sqrt(global_single_number)-1)
-	{
-		return;
-	}
-	else
-	{
-		mySwap(arr[zero_posiztion], arr[zero_posiztion + 1]);
-	}
-}
-
-
-void movement_single(int arr[global_single_number]) 
-{
-	struct_type_single_arrays* Up_Selected_Array = new struct_type_single_arrays;
-	move_single_up(Up_Selected_Array->array, global_single_number);
-	{
-		if (check_single==false)
-		{
-			possiable_single_cases.push_back(*Up_Selected_Array);
+			newfile << array[i] << "\t";
 		}
 		else
 		{
-			delete Up_Selected_Array;
-			Up_Selected_Array = NULL;
+			newfile << array[i] << endl;
 		}
+	}
+	newfile << endl;
+	newfile.close();
 
-	};
+};
+
+void readFile()
+{
+	string newstring;
+	vector<string>strvector;
+	ifstream newfile;
+	newfile.open("test.txt", ios::in);
+	if (!newfile.is_open())
+	{
+		cout << "open file failed" << endl;
+		return;
+	}
+	while (getline(newfile, newstring))
+	{
+		strvector.push_back(newstring);
+	}
+	for (int i = 0; i < strvector.size(); i++)
+	{
+		cout << strvector[i] << endl;
+	}
+
+	newfile.close();
+}
+
+void sort_by_set(int *array,int length)
+{
+	int count;
+	int counter=0;
+	int* newarray = new int[global_single_number];
+	set<int> setarray;
+	for (int i = 0; i < length; i++)
+	{
+		setarray.insert(array[i]);
+	}
+	setarray.erase(setarray.begin());
+
+	for (set<int>::iterator it=setarray.begin();it!=setarray.end();it++)
+	{
+		cout << *it << endl;
+		newarray[counter++] = *it;
+	}
+	newarray[global_single_number - 1] = 0;
+	print_single_map(newarray, global_single_number);
+}
+
+
+void ClassUI::mianpage() 
+{
+	
 }
