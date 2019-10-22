@@ -101,7 +101,7 @@ int main()
 {
 	/*	int array[4][4] = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,0} };*/
 	/*int array[] = { 6, 3, 4, 5, 1, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 0 };*/
-
+	inputArray();
 	int* array = random_array();
 		
 	print_single_map(array, global_single_number);

@@ -18,5 +18,19 @@
     <ClCompile Include="15-Puzzle-Demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PuzzleTools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CreativeArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PuzzleTools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CreativeArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

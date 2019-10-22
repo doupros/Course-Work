@@ -152,6 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="15-Puzzle-Demo.cpp" />
+    <ClCompile Include="CreativeArray.cpp" />
+    <ClCompile Include="PuzzleTools.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CreativeArray.h" />
+    <ClInclude Include="PuzzleTools.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
