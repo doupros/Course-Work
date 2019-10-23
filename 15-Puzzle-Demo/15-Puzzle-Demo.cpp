@@ -1,88 +1,35 @@
 #include "PuzzleTools.h"
 #include"CreativeArray.h"
-#include <fstream>
-#include <string>
+#include "PuzzleFile.h"
+#include"PuzzleCalculation.h"
 #include <windows.h>
-
-
+/*coded by Hemi li*/
 int get_level();
-void menu() ;
+void menu();
 
 
-class PuzzleFile
-{
-public:
-	PuzzleFile();
-	~PuzzleFile();
-	void write_in_file(int* array, int length);
-	void read_from_file();
-
-private:
-
-};
-
-PuzzleFile::PuzzleFile()
-{
-}
-
-PuzzleFile::~PuzzleFile()
-{
-}
 
 
-void PuzzleFile::write_in_file(int* array, int length)
-{
-	ofstream newfile;
-	newfile.open("15-File.txt", ios::app);
-	for (int i = 0; i < length; i++)
-	{
-		if (array[i] == 0)
-		{
-			newfile << " " << "\t";
-			if (i == PUZZLESZE - 1 || i == PUZZLESZE * 2 - 1 || i == PUZZLESZE * 3 - 1 || i == PUZZLESZE * 4 - 1)
-			{
-				newfile << endl;
-			}
-		}
-		else if ((i + 1) % PUZZLESZE != 0)
-		{
-			newfile << array[i] << "\t";
-		}
-		else
-		{
-			newfile << array[i] << endl;
-		}
-	}
-	newfile << endl;
-	newfile.close();
-}
-
-void PuzzleFile::read_from_file() 
-{
-	string newstring;
-	vector<string>strvector;
-	ifstream newfile;
-	newfile.open("15-File.txt", ios::in);
-	if (!newfile.is_open())
-	{
-		cout << "open file failed" << endl;
-		return;
-	}
-	while (getline(newfile, newstring))
-	{
-		strvector.push_back(newstring);
-	}
-	for (unsigned int i = 0; i < strvector.size(); i++)
-	{
-		cout << strvector[i] << endl;
-	}
-	newfile.close();
-}
-
-CreateArray NewArray; PuzzleFile NewFile;
-
+CreateArray NewCreateArray; PuzzleFile NewFile; PuzzleCalculation NewCalculate;
 int main()
 {
+	/*int* arrayptr = new int [16];
+	for (int i = 1; i < 16; i++)
+	{
+		arrayptr[i-1] = i;
+	}
+	arrayptr[15] = 0;*/
+	int* arrayptr= NewCreateArray.random_array(PUZZLENUM);
+	NewCreateArray.print_single_map(arrayptr, PUZZLENUM);
+	cout << NewCalculate.check_2partial_of_array(arrayptr, PUZZLENUM) << endl;
+	cout << NewCalculate.check_3partial_of_array(arrayptr, PUZZLENUM) << endl;
+	arrayptr = NewCalculate.sort_array_by_set(arrayptr, PUZZLENUM);
+	NewCreateArray.print_single_map(arrayptr,PUZZLENUM);
+	cout << NewCalculate.check_3partial_of_array(arrayptr, PUZZLENUM) << endl;
+	cout << NewCalculate.check_partial_of_array(arrayptr, PUZZLENUM)<<endl;
+	cout << NewCalculate.calculate_result(arrayptr,PUZZLENUM) << endl;
+
+	//NewFile.write_result_in_file(NewFile.read_from_file(), PUZZLENUM);
 	menu();
 	return 0;
 }
@@ -112,19 +59,17 @@ void menu()
 {
 	for (;;)
 	{
-		cout << "*************************************************************" << endl;
-		cout << "***	1. input a 4*4 array manually***" << endl;
-		cout << "***	2. randomly create some array automaticlly***" << endl;
-		cout << "*************************************************************" << endl;
-		cout << "*************************************************************" << endl;
-		cout << "*************************************************************" << endl;
-
+		cout << "---	1. input a 4*4 array manually" << endl;
+		cout << "---	2. randomly create some array automaticlly" << endl;
+		cout << "---	3. read & calculate the array in file" << endl;
+		cout << "---	4. read the solution from file" << endl;
+		cout << "---	0. exit" << endl;
 		int num;
 		for (;;)
 		{
 			cout << "please input your choise" << endl;
 			cin >> num;
-			if (cin.fail() || num < 0 || num > 4)
+			if (cin.fail() || num < 0 || num > 10)
 			{
 				cin.clear();
 				cin.ignore(1024, '\n');
@@ -138,20 +83,25 @@ void menu()
 			exit(0);
 		case	1:
 		{
-			int* array = NewArray.input_array();
+			int* array = NewCreateArray.input_array();
 			string input;
-			cout << "do you want to see the array you inputed?(Y/N)" << endl;
+			cout << "do you want to save the array you inputed to file?(Y/N)" << endl;
 			cin >> input;
-			if (input == "Y"||input=="y")
-			{
-				NewArray.print_single_map(array, PUZZLESZE);
-			}
-			else if (input=="N"||input=="n")
+			if (input == "N" || input == "n")
 			{
 				system("cls");
+				NewCreateArray.print_single_map(array, PUZZLENUM);
+				break;
 			}
+			else if (input == "Y" || input == "y")
+			{
+				system("cls");
+				NewFile.write_in_file(array, PUZZLENUM );
+				cout << "arrays was saved in file" << endl;
+				break;
+			}
+			else break;
 		}
-
 		case 2: 
 		{
 			int num;
@@ -172,9 +122,10 @@ void menu()
 			cin >> input;
 			if (input=="Y"||input=="y")
 			{
+				NewFile.write_in_file(&num, 1);
 				for (int i = 0; i < num; i++)
 				{
-					NewFile.write_in_file(NewArray.random_array(PUZZLESZE), PUZZLESZE * PUZZLESZE);
+					NewFile.write_fill_file(NewCreateArray.random_array(PUZZLENUM), PUZZLENUM );
 				}
 			}
 			else if (input =="N"||input=="n")
@@ -182,10 +133,34 @@ void menu()
 				for (int i = 0; i < num; i++)
 				{
 					cout << num << endl;
-					NewArray.print_single_map(NewArray.random_array(PUZZLESZE), PUZZLESZE);
+					NewCreateArray.print_single_map(NewCreateArray.random_array(PUZZLENUM), PUZZLENUM);
 				}
 			}
 		}
+		case 3:
+		{
+			string input;
+			NewFile.read_and_print_puzzle_file();
+			cout << "do you want to calculate it (Y/N)?" << endl;
+			cin >> input;
+			if (input == "Y" || input == "y")
+			{
+				NewFile.write_result_in_file(NewFile.read_from_file(), PUZZLENUM);
+			}
+			else if (input == "N" || input == "n")
+			{
+				break;
+			}
+		}
+		case 4: 
+		{
+			system("cls");
+			NewFile.read_and_print_solution_file();
+		}
+		case 5: {}
+		case 6: {}
+
+
 		default:
 			break;
 		}

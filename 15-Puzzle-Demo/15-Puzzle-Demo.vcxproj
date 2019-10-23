@@ -153,10 +153,14 @@
   <ItemGroup>
     <ClCompile Include="15-Puzzle-Demo.cpp" />
     <ClCompile Include="CreativeArray.cpp" />
+    <ClCompile Include="PuzzleCalculation.cpp" />
+    <ClCompile Include="PuzzleFile.cpp" />
     <ClCompile Include="PuzzleTools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CreativeArray.h" />
+    <ClInclude Include="PuzzleCalculation.h" />
+    <ClInclude Include="PuzzleFile.h" />
     <ClInclude Include="PuzzleTools.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

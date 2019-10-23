@@ -29,9 +29,9 @@ int* CreateArray::random_array(int level)
 int* CreateArray::input_array()
 {
 	int num;
-	int* array = new int[PUZZLESZE * PUZZLESZE];
+	int* array = new int[PUZZLENUM * PUZZLENUM];
 	cout << "you choised to input an array manualy(4x4)" << endl;
-	for (int i = 0; i < PUZZLESZE * PUZZLESZE - 1; i++)
+	for (int i = 0; i < PUZZLENUM * PUZZLENUM - 1; i++)
 	{
 		for (;;)
 		{
@@ -43,7 +43,7 @@ int* CreateArray::input_array()
 				cin.ignore(1024, '\n');
 				cout << "incorrect input, please input again!" << endl;
 			}
-			else if (compare_array_and_num(array, PUZZLESZE * PUZZLESZE, num))
+			else if (compare_array_and_num(array, PUZZLENUM * PUZZLENUM, num))
 			{
 				cout << "the number is already inputed, please input again!" << endl;
 			}
@@ -53,6 +53,6 @@ int* CreateArray::input_array()
 			}
 		}
 	}
-	array[PUZZLESZE * PUZZLESZE - 1] = 0;
+	array[PUZZLENUM * PUZZLENUM - 1] = 0;
 	return array;
 }
