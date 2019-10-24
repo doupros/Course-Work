@@ -55,44 +55,43 @@ void PuzzleFile::write_fill_file(int* array, int length)
 	newfile.close();
 }
 
-void PuzzleFile::write_result_in_file(int* array, int length, bool input) 
+void PuzzleFile::write_result_in_file(int* array, int length, bool input)
 {
 	unsigned long long  result = sort_and_calculate_result(array, length);
-	ofstream newfile;
-	newfile.open("Solution-File.txt", ios::out);
+	ofstream outputfile;
+	outputfile.open("Solution-File.txt", ios::app);
 	for (int i = 0; i < length * length; i++)
 	{
 		if (array[i] == 0)
 		{
-			newfile << " " << "\t";
+			outputfile << " " << "\t";
 			if (i == length - 1 || i == length * 2 - 1 || i == length * 3 - 1 || i == length * 4 - 1)
 			{
-				newfile << endl;
+				outputfile << endl;
 			}
 		}
 		else if ((i + 1) % length != 0)
 		{
-			newfile << array[i] << "\t";
+			outputfile << array[i] << "\t";
 		}
 		else
 		{
-			newfile << array[i] << endl;
+			outputfile << array[i] << endl;
 		}
 	}
-	newfile << "row = " << result << endl;
-	newfile << "column = " << result << endl;
-	newfile << "reverse row = " << result << endl;
-	newfile << "reverse column = " << result << endl;
-	newfile << "(total for row & column, including reverse, in this configuration)" << endl;
-	newfile << "2 = " << check_2partial_of_array(array, length) << endl;
-	newfile << "3 = " << check_3partial_of_array(array, length) << endl;
-	newfile << "4 = " << check_4partial_of_array(array, length) << endl;
-	newfile << "(total for row and column, including reverse, for all valid turns)" << endl;
-	newfile << "2 = " << check_2partial_of_array(sort_array_by_set(array, length), length) << endl;
-	newfile << "3 = " << check_3partial_of_array(sort_array_by_set(array, length), length) << endl;
-	newfile << "4 = " << check_4partial_of_array(sort_array_by_set(array, length), length) << endl;
-	newfile << endl;
-	newfile.close();
+	outputfile << "row = " << result << endl;
+	outputfile << "column = " << result << endl;
+	outputfile << "reverse row = " << result << endl;
+	outputfile << "reverse column = " << result << endl;
+	outputfile << "(total for row & column, including reverse, in this configuration)" << endl;
+	outputfile << "2 = " << check_2partial_of_array(array, length) << endl;
+	outputfile << "3 = " << check_3partial_of_array(array, length) << endl;
+	outputfile << "4 = " << check_4partial_of_array(array, length) << endl;
+	outputfile << "(total for row and column, including reverse, for all valid turns)" << endl;
+	outputfile << "2 = " << get_all_cases_2partial_of_array(array, length) << endl;
+	outputfile << "3 = " << get_all_cases_3partial_of_array(array, length) << endl;
+	outputfile << "4 = " << get_all_cases_4partial_of_array(array, length) << endl;
+	outputfile << endl;
 }
 
 void PuzzleFile::write_result_in_file(int* array17, int length) 
@@ -187,7 +186,6 @@ void PuzzleFile::read_and_print_solution_file()
 
 int* PuzzleFile::read_from_file()
 {
-
 	ifstream newfile;
 	int *readarray= new int [17];
 	newfile.open("15-File.txt", ios::in);
@@ -206,4 +204,102 @@ int* PuzzleFile::read_from_file()
 	}
 	newfile.close();
 	return readarray;
+}
+
+int* PuzzleFile::read_from_file_plus_calculation(int length)
+{
+	ifstream newfile;
+	vector<int*> arrayVector;
+	int num=0;
+	newfile.open("15-File.txt", ios::in);
+	if (!newfile.is_open())
+	{
+		cout << "open file failed" << endl;
+		return NULL;
+	}
+
+	if (!newfile.eof())
+	{
+		newfile >> num;
+		for (int j = 0; j < num; j++)
+		{
+			int *readarray= new int[16];
+			for (int i = 0; i < 15; i++)
+			{
+				newfile >> readarray[i];
+			}
+			readarray[15] = 0;
+			arrayVector.push_back(readarray);
+		}
+	}
+	newfile.close();
+	int *newarray= new int[16];
+	ofstream outputfile;
+	outputfile.open("Solution-File.txt", ios::out);
+	outputfile << num<<endl;
+	outputfile.close();
+	for (int j =0;j< arrayVector.size();j ++)
+	{
+		newarray = arrayVector[j];
+		/*for (int i = 0; i < 16; i++)
+		{
+			cout << newarray[i]<<"\t";
+		}*/
+		//for (int i = 0; i < length * length; i++)
+		//{
+		//	if (newarray[i] == 0)
+		//	{
+		//		outputfile << " " << "\t";
+		//		if (i == length - 1 || i == length * 2 - 1 || i == length * 3 - 1 || i == length * 4 - 1)
+		//		{
+		//			outputfile << endl;
+		//		}
+		//	}
+		//	else if ((i + 1) % length != 0)
+		//	{
+		//		outputfile << newarray[i] << "\t";
+		//	}
+		//	else
+		//	{
+		//		outputfile << newarray[i] << endl;
+		//	}
+		//}
+		unsigned long long  result = sort_and_calculate_result(newarray, length);
+		outputfile.open("Solution-File.txt", ios::app);
+		for (int i = 0; i < length * length; i++)
+		{
+			if (newarray[i] == 0)
+			{
+				outputfile << " " << "\t";
+				if (i == length - 1 || i == length * 2 - 1 || i == length * 3 - 1 || i == length * 4 - 1)
+				{
+					outputfile << endl;
+				}
+			}
+			else if ((i + 1) % length != 0)
+			{
+				outputfile << newarray[i] << "\t";
+			}
+			else
+			{
+				outputfile << newarray[i] << endl;
+			}
+		}
+		outputfile << "row = " << result << endl;
+		outputfile << "column = " << result << endl;
+		outputfile << "reverse row = " << result << endl;
+		outputfile << "reverse column = " << result << endl;
+		outputfile << "(total for row & column, including reverse, in this configuration)" << endl;
+		outputfile << "2 = " << check_2partial_of_array(newarray, length) << endl;
+		outputfile << "3 = " << check_3partial_of_array(newarray, length) << endl;
+		outputfile << "4 = " << check_4partial_of_array(newarray, length) << endl;
+		outputfile << "(total for row and column, including reverse, for all valid turns)" << endl;
+		outputfile << "2 = " << get_all_cases_2partial_of_array(newarray, length) << endl;
+		outputfile << "3 = " << get_all_cases_3partial_of_array(newarray, length) << endl;
+		outputfile << "4 = " << get_all_cases_4partial_of_array(newarray, length) << endl;
+		outputfile << endl;
+		outputfile.close();
+	}
+	outputfile.close();
+	return newarray;
 }

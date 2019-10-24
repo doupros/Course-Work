@@ -6,7 +6,14 @@
 /*coded by Hemi li*/
 int get_level();
 void menu();
+BOOL SetConsoleColor(WORD wAttributes)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsole == INVALID_HANDLE_VALUE)
+		return FALSE;
 
+	return SetConsoleTextAttribute(hConsole, wAttributes);
+}
 auto get_factorial = [](int num)
 {
 	unsigned long long result = 0;
@@ -17,7 +24,6 @@ auto get_factorial = [](int num)
 	}
 	return result;
 };
-
 template<class T>
 void mySwap(T& a, T& b)
 {
@@ -25,25 +31,10 @@ void mySwap(T& a, T& b)
 	a = b;
 	b = temp;
 }
-
 CreateArray NewCreateArray; PuzzleFile NewFile; PuzzleCalculation NewCalculate;
 int main()
 {
-	//cout << get_factorial(5) <<endl;
-	//int* arrayptr= NewCreateArray.random_array(PUZZLENUM);
-	//NewCreateArray.print_single_map(arrayptr, PUZZLENUM);
-	//cout << NewCalculate.check_2partial_of_array(arrayptr, PUZZLENUM) << endl;
-	//cout << NewCalculate.check_3partial_of_array(arrayptr, PUZZLENUM) << endl;
-	//arrayptr = NewCalculate.sort_array_by_set(arrayptr, PUZZLENUM);
-	//NewCreateArray.print_single_map(arrayptr,PUZZLENUM);
-	//cout << NewCalculate.check_2partial_of_array(arrayptr, PUZZLENUM) << endl;
-	//cout << NewCalculate.check_3partial_of_array(arrayptr, PUZZLENUM) << endl;
-	//cout << NewCalculate.check_4partial_of_array(arrayptr, PUZZLENUM) << endl;
-	//cout << NewCalculate.check_partial_of_array(arrayptr, PUZZLENUM)<<endl;
-	//cout << NewCalculate.calculate_result(arrayptr,PUZZLENUM) << endl;
-	//delete arrayptr;
-	//arrayptr = NULL;
-	//NewFile.write_result_in_file(NewFile.read_from_file(), PUZZLENUM);
+	SetConsoleColor(FOREGROUND_GREEN | FOREGROUND_RED );
 	menu();
 	return 0;
 }
@@ -67,26 +58,25 @@ int get_level()
 		}
 	}
 }
-
-
 void menu() 
 {
 	for (;;)
 	{
-		cout << "---	1. input a 4*4 array manually" << endl;
-		cout << "---	2. randomly create some array automaticlly" << endl;
-		cout << "---	3. read & calculate the array in file" << endl;
-		cout << "---	4. read the solution from file" << endl;
-		cout << "---	5. open the file" << endl;
-		cout << "---	6. create an array (1~15)" << endl;
-
-		cout << "---	0. exit" << endl;
+		cout << "---	---	---	---	---	---	---	---	" << endl;
+		cout << "---	1. input a 4*4 puzzle manually			---" << endl;
+		cout << "---	2. create an puzzle (1~15)			---" << endl;
+		cout << "---	3. randomly create some puzzle automaticlly	---" << endl;
+		cout << "---	4. read & calculate the puzzle result to file	---" << endl;
+		cout << "---	5. read the solution from file			---" << endl;
+		cout << "---	6. open the file				---" << endl;
+		cout << "---	0. exit						---" << endl;
+		cout << "---	---	---	---	---	---	---	---	" << endl;
 		int num;
 		for (;;)
 		{
-			cout << "please input your choise" << endl;
+			cout << "***please input your choise***" << endl;
 			cin >> num;
-			if (cin.fail() || num < 0 || num > 10)
+			if (cin.fail() || num < 0 || num > 6)
 			{
 				cin.clear();
 				cin.ignore(1024, '\n');
@@ -121,7 +111,38 @@ void menu()
 			}
 			else break;
 		}
-		case 2: //random array
+		case 2://generate defalt map
+		{
+			int* arrayptr = new int[16];
+			for (int i = 1; i < 16; i++)
+			{
+				arrayptr[i - 1] = i;
+			}
+			arrayptr[15] = 0;
+			NewCreateArray.print_single_map(arrayptr, PUZZLENUM);
+			string input;
+			cout << "do you want to save the array you inputed to file?(Y/N)" << endl;
+			cin >> input;
+			if (input == "N" || input == "n")
+			{
+				system("cls");
+				NewCreateArray.print_single_map(arrayptr, PUZZLENUM);
+				break;
+			}
+			else if (input == "Y" || input == "y")
+			{
+				int num = 1;
+				system("cls");
+				NewFile.write_in_file(&num, 1);
+				NewFile.write_fill_file(arrayptr, PUZZLENUM);
+				cout << "arrays was saved in file" << endl;
+				break;
+			}
+			else break;
+
+
+		}
+		case 3: //random array
 		{
 			int num;
 			string input;
@@ -151,7 +172,7 @@ void menu()
 						NewFile.write_fill_file(NewFile.sort_array_by_set(NewCreateArray.random_array(PUZZLENUM),PUZZLENUM), PUZZLENUM);
 					}
 					system("cls");
-					cout << "write in file finished input 3 to read it" << endl;
+					cout << "write in file finished input 4 to read it" << endl;
 					break;
 				}
 				else if (input == "N" || input == "n")
@@ -195,7 +216,7 @@ void menu()
 			else break; 
 
 		}
-		case 3://read & calculate the result
+		case 4://read & calculate the result
 		{
 			system("cls");
 			string input;
@@ -205,10 +226,16 @@ void menu()
 			cout << "do you want to calculate it (Y/N)?" << endl;
 			cin >> input;
 			if (input == "Y" || input == "y")
+				/*{
+					NewFile.write_result_in_file(arrayptr, PUZZLENUM);
+					system("cls");
+					cout << "calculated finshed, input 4 to read the solution" << endl;
+					break;
+				}*/
 			{
-				NewFile.write_result_in_file(arrayptr, PUZZLENUM);
+				NewFile.read_from_file_plus_calculation(PUZZLENUM);
 				system("cls");
-				cout << "calculated finshed, input 4 to read the solution" << endl;
+				cout << "calculation finshed, input 5 to show the result" << endl;
 				break;
 			}
 			else if (input == "N" || input == "n")
@@ -217,13 +244,13 @@ void menu()
 			}
 			else break;
 		}
-		case 4: //read the solution from file
+		case 5: //read the solution from file
 		{
 			system("cls");
 			NewFile.read_and_print_solution_file();
 			break;
 		}
-		case 5: 
+		case 6: 
 		{
 			int num;
 			cout << "--	which file do you want to open?" << endl;
@@ -253,38 +280,6 @@ void menu()
 				break;
 			}
 		}
-		case 6: 
-		{
-			int* arrayptr = new int[16];
-			for (int i = 1; i < 16; i++)
-			{
-				arrayptr[i - 1] = i;
-			}
-			arrayptr[15] = 0;
-			NewCreateArray.print_single_map(arrayptr, PUZZLENUM);
-			string input;
-			cout << "do you want to save the array you inputed to file?(Y/N)" << endl;
-			cin >> input;
-			if (input == "N" || input == "n")
-			{
-				system("cls");
-				NewCreateArray.print_single_map(arrayptr, PUZZLENUM);
-				break;
-			}
-			else if (input == "Y" || input == "y")
-			{
-				int num = 1;
-				system("cls");
-				NewFile.write_in_file(&num, 1);
-				NewFile.write_fill_file(arrayptr, PUZZLENUM);
-				cout << "arrays was saved in file" << endl;
-				break;
-			}
-			else break;
-
-			
-		}
-
 
 		default:
 			break;

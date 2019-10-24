@@ -11,6 +11,8 @@ public:
 	void read_and_print_puzzle_file();
 	void read_and_print_solution_file();
 	int* read_from_file();
+	int* read_from_file_plus_calculation(int length);
+
 
 private:
 
