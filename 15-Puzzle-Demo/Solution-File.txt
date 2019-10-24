@@ -1,18 +1,18 @@
-10
-4	9	11	13
-20	19	12	5
-15	17	10	6
-8	16	14	 	
-row = 419126400
-column = 419126400
-reverse row = 419126400
-reverse column = 419126400
+1
+1	2	3	4
+5	6	7	8
+9	10	11	12
+13	14	15	 	
+row = 718502400
+column = 718502400
+reverse row = 718502400
+reverse column = 718502400
 (total for row & column, including reverse, in this configuration)
-2 = 2
-3 = 4
-4 = 0
+2 = 11
+3 = 7
+4 = 3
 (total for row and column, including reverse, for all valid turns)
-2 = 12
-3 = 22
-4 = 7
+2 = 130767436800
+3 = 9340531200
+4 = 718502400
 

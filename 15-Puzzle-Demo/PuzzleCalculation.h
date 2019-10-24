@@ -13,6 +13,11 @@ public:
 	unsigned long long get_factorial(int num);
 	unsigned long long calculate_result(int* array, int length);
 	unsigned long long sort_and_calculate_result(int* array, int length);
+
+	unsigned long long get_all_cases_2partial_of_array(int* array, int length);
+	unsigned long long get_all_cases_3partial_of_array(int* array, int length);
+	unsigned long long get_all_cases_4partial_of_array(int* array, int length);
+
 private:
 
 };
