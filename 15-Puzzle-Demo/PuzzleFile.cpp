@@ -97,12 +97,12 @@ void PuzzleFile::write_result_in_file(int* array, int length, bool input)
 void PuzzleFile::write_result_in_file(int* array17, int length) 
 {
 	int num = array17[0];
-	int *array = new int[16];
-	for (int i = 0; i < 16; i++)
+	int *array = new int[length*length];
+	for (int i = 0; i < length*length; i++)
 	{
 		array[i] = array17[i + 1];
 	}
-	array[15] = 0;
+	array[length*length-1] = 0;
 	unsigned long long  result = sort_and_calculate_result(array,length);
 	ofstream newfile;
 	newfile.open("Solution-File.txt", ios::out);
@@ -223,17 +223,17 @@ int* PuzzleFile::read_from_file_plus_calculation(int length)
 		newfile >> num;
 		for (int j = 0; j < num; j++)
 		{
-			int *readarray= new int[16];
-			for (int i = 0; i < 15; i++)
+			int *readarray= new int[length*length];
+			for (int i = 0; i < length*length-1; i++)
 			{
 				newfile >> readarray[i];
 			}
-			readarray[15] = 0;
+			readarray[length*length-1] = 0;
 			arrayVector.push_back(readarray);
 		}
 	}
 	newfile.close();
-	int *newarray= new int[16];
+	int *newarray= new int[length*length];
 	ofstream outputfile;
 	outputfile.open("Solution-File.txt", ios::out);
 	outputfile << num<<endl;
@@ -285,6 +285,7 @@ int* PuzzleFile::read_from_file_plus_calculation(int length)
 				outputfile << newarray[i] << endl;
 			}
 		}
+		outputfile << endl;
 		outputfile << "row = " << result << endl;
 		outputfile << "column = " << result << endl;
 		outputfile << "reverse row = " << result << endl;

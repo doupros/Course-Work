@@ -3,7 +3,7 @@
 int* PuzzleCalculation::sort_array_by_set(int* array, int length)
 {
 	int count = 0;
-	int* newarray = new int[16];
+	int* newarray = new int[length*length];
 	set<int> setarray;
 	for (int i = 0; i < length * length; i++)
 	{
@@ -254,22 +254,22 @@ int PuzzleCalculation::check_2partial_of_array(int* array, int length)
 	return count ;
 }
 
-
-unsigned long long PuzzleCalculation::get_factorial(int num)
+template<class T>
+unsigned long long  PuzzleCalculation::get_factorial(T num)
 {
-	unsigned long long result = 0;
+	T result = 0;
 	result = num;
-	for (int i = num - 1; i > 0; i--)
+	for (T i = num - 1; i > 0; i--)
 	{
 		result *= i;
 	}
 	return result;
-}
+};
 
 unsigned long long PuzzleCalculation::calculate_result(int* array,int length)
 {
 	unsigned long long result = 0;
-	result = ((unsigned long long)(check_partial_of_array(array, length)) * (length - 1)) * (get_factorial((length * length - length - 1)) / 2);
+	result = ((unsigned long long)(check_partial_of_array(array, length)) * ((unsigned long long)length - 1)) * (get_factorial((length * length - length - 1)) / 2);
 	return result;
 }
 
@@ -292,7 +292,7 @@ unsigned long long PuzzleCalculation::get_all_cases_2partial_of_array(int* array
 		if (setArray.find((*it_of_set) + 1) != setArray.end())
 			count++;
 	}
-	return (unsigned long long)(count * (length - 1) * get_factorial((length * length - 3)) / 2);
+	return (unsigned long long)(count * ((unsigned long long)length - 1) * get_factorial((length * length - 3)) / 2);
 }
 unsigned long long PuzzleCalculation::get_all_cases_3partial_of_array(int* array, int length) 
 {
@@ -307,8 +307,8 @@ unsigned long long PuzzleCalculation::get_all_cases_3partial_of_array(int* array
 		if (setArray.find((*it_of_set) + 1) != setArray.end()&& setArray.find((*it_of_set) + 2) != setArray.end())
 			count++;
 	}
-
-	return (unsigned long long)(count * (length - 1) * get_factorial((length * length - 4)) / 2);
+	auto factorial = get_factorial<unsigned long long>((unsigned long long)length * length - 4);
+	return (unsigned long long)count * ((unsigned long long)length - 1)* (factorial / 2);
 }
 unsigned long long PuzzleCalculation::get_all_cases_4partial_of_array(int* array, int length)
 {
@@ -323,5 +323,5 @@ unsigned long long PuzzleCalculation::get_all_cases_4partial_of_array(int* array
 		if (setArray.find((*it_of_set) + 1) != setArray.end()&& setArray.find((*it_of_set) + 2) != setArray.end() && setArray.find((*it_of_set) + 3) != setArray.end())
 			count++;
 	}
-	return (unsigned long long)(count * (length - 1) * get_factorial((length * length - 5)) / 2);
+	return (unsigned long long)(count * ((unsigned long long)length - 1) * get_factorial(((unsigned long long)length * length - 5)) / 2);
 }

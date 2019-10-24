@@ -14,9 +14,11 @@ BOOL SetConsoleColor(WORD wAttributes)
 
 	return SetConsoleTextAttribute(hConsole, wAttributes);
 }
-auto get_factorial = [](int num)
+
+template<class T>
+auto get_factorial = [](T num)
 {
-	unsigned long long result = 0;
+	T result = 0;
 	result = num;
 	for (int i = num - 1; i > 0; i--)
 	{
@@ -24,17 +26,21 @@ auto get_factorial = [](int num)
 	}
 	return result;
 };
-template<class T>
-void mySwap(T& a, T& b)
-{
-	T temp = a;
-	a = b;
-	b = temp;
-}
+
+//template<class T>
+//void mySwap(T& a, T& b)
+//{
+//	T temp = a;
+//	a = b;
+//	b = temp;
+//}
+
 CreateArray NewCreateArray; PuzzleFile NewFile; PuzzleCalculation NewCalculate;
+int puzzlenum = 4;
 int main()
 {
 	SetConsoleColor(FOREGROUND_GREEN | FOREGROUND_RED );
+	puzzlenum = get_level();
 	menu();
 	return 0;
 }
@@ -63,8 +69,8 @@ void menu()
 	for (;;)
 	{
 		cout << "---	---	---	---	---	---	---	---	" << endl;
-		cout << "---	1. input a 4*4 puzzle manually			---" << endl;
-		cout << "---	2. create an puzzle (1~15)			---" << endl;
+		cout << "---	1. input a puzzle manually			---" << endl;
+		cout << "---	2. create a "<<puzzlenum<<"x"<<puzzlenum<<" puzzle by order			---" << endl;
 		cout << "---	3. randomly create some puzzle automaticlly	---" << endl;
 		cout << "---	4. read & calculate the puzzle result to file	---" << endl;
 		cout << "---	5. read the solution from file			---" << endl;
@@ -90,14 +96,14 @@ void menu()
 			exit(0);
 		case	1://input array
 		{
-			int* array = NewCreateArray.input_array();
+			int* array = NewCreateArray.input_array(puzzlenum);
 			string input;
 			cout << "do you want to save the array you inputed to file?(Y/N)" << endl;
 			cin >> input;
 			if (input == "N" || input == "n")
 			{
 				system("cls");
-				NewCreateArray.print_single_map(array, PUZZLENUM);
+				NewCreateArray.print_single_map(array, puzzlenum);
 				break;
 			}
 			else if (input == "Y" || input == "y")
@@ -105,7 +111,7 @@ void menu()
 				int num = 1;
 				system("cls");
 				NewFile.write_in_file(&num, 1);
-				NewFile.write_fill_file(array, PUZZLENUM );
+				NewFile.write_fill_file(array, puzzlenum );
 				cout << "arrays was saved in file" << endl;
 				break;
 			}
@@ -113,20 +119,20 @@ void menu()
 		}
 		case 2://generate defalt map
 		{
-			int* arrayptr = new int[16];
-			for (int i = 1; i < 16; i++)
+			int* arrayptr = new int[puzzlenum*puzzlenum];
+			for (int i = 1; i < puzzlenum * puzzlenum; i++)
 			{
 				arrayptr[i - 1] = i;
 			}
-			arrayptr[15] = 0;
-			NewCreateArray.print_single_map(arrayptr, PUZZLENUM);
+			arrayptr[puzzlenum * puzzlenum-1] = 0;
+			NewCreateArray.print_single_map(arrayptr, puzzlenum);
 			string input;
 			cout << "do you want to save the array you inputed to file?(Y/N)" << endl;
 			cin >> input;
 			if (input == "N" || input == "n")
 			{
 				system("cls");
-				NewCreateArray.print_single_map(arrayptr, PUZZLENUM);
+				NewCreateArray.print_single_map(arrayptr, puzzlenum);
 				break;
 			}
 			else if (input == "Y" || input == "y")
@@ -134,7 +140,7 @@ void menu()
 				int num = 1;
 				system("cls");
 				NewFile.write_in_file(&num, 1);
-				NewFile.write_fill_file(arrayptr, PUZZLENUM);
+				NewFile.write_fill_file(arrayptr, puzzlenum);
 				cout << "arrays was saved in file" << endl;
 				break;
 			}
@@ -169,7 +175,7 @@ void menu()
 					NewFile.write_in_file(&num, 1);
 					for (int i = 0; i < num; i++)
 					{
-						NewFile.write_fill_file(NewFile.sort_array_by_set(NewCreateArray.random_array(PUZZLENUM),PUZZLENUM), PUZZLENUM);
+						NewFile.write_fill_file(NewFile.sort_array_by_set(NewCreateArray.random_array(puzzlenum),puzzlenum), puzzlenum);
 					}
 					system("cls");
 					cout << "write in file finished input 4 to read it" << endl;
@@ -180,7 +186,7 @@ void menu()
 					cout << num << endl;
 					for (int i = 0; i < num; i++)
 					{
-						NewCreateArray.print_single_map(NewFile.sort_array_by_set(NewCreateArray.random_array(PUZZLENUM), PUZZLENUM), PUZZLENUM);
+						NewCreateArray.print_single_map(NewFile.sort_array_by_set(NewCreateArray.random_array(puzzlenum), puzzlenum), puzzlenum);
 					}
 					break;
 				}
@@ -197,7 +203,7 @@ void menu()
 					NewFile.write_in_file(&num, 1);
 					for (int i = 0; i < num; i++)
 					{
-						NewFile.write_fill_file(NewCreateArray.random_array(PUZZLENUM), PUZZLENUM);
+						NewFile.write_fill_file(NewCreateArray.random_array(puzzlenum), puzzlenum);
 					}
 					break;
 				}
@@ -206,7 +212,7 @@ void menu()
 					cout << num << endl;
 					for (int i = 0; i < num; i++)
 					{
-						NewCreateArray.print_single_map(NewCreateArray.random_array(PUZZLENUM), PUZZLENUM);
+						NewCreateArray.print_single_map(NewCreateArray.random_array(puzzlenum), puzzlenum);
 					}
 					break;
 				}
@@ -233,7 +239,7 @@ void menu()
 					break;
 				}*/
 			{
-				NewFile.read_from_file_plus_calculation(PUZZLENUM);
+				NewFile.read_from_file_plus_calculation(puzzlenum);
 				system("cls");
 				cout << "calculation finshed, input 5 to show the result" << endl;
 				break;

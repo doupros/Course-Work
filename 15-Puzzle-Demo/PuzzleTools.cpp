@@ -1,10 +1,10 @@
 #include "PuzzleTools.h"
 
-int PuzzleTools::get_random_number()
+int PuzzleTools::get_random_number(int length)
 {
 	random_device random_dev;
 	mt19937 range(random_dev());
-	uniform_int_distribution<mt19937::result_type>random_number(1, 20);
+	uniform_int_distribution<mt19937::result_type>random_number(1, length*length+length);
 	return random_number(range);
 }
 

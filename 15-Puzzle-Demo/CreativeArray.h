@@ -5,7 +5,7 @@ class CreateArray : public PuzzleTools
 {
 public:
 	int* random_array(int level);
-	int* input_array();
+	int* input_array(int puzzlenum);
 private:
 
 };
