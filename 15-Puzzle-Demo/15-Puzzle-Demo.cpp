@@ -4,7 +4,7 @@
 #include"PuzzleCalculation.h"
 #include <windows.h>
 /*coded by Hemi li*/
-int get_level();
+
 void menu();
 BOOL SetConsoleColor(WORD wAttributes)
 {
@@ -27,6 +27,27 @@ auto get_factorial = [](T num)
 	return result;
 };
 
+
+auto get_level = []()
+{
+	int newinput;
+	for (;;)
+	{
+		cout << "please input the level:" << endl;
+		cin >> newinput;
+		if (cin.fail() || newinput <= 1)
+		{
+			cin.clear();
+			cin.ignore(1024, '\n');
+			cout << "incorrect input, please input again!" << endl;
+		}
+		else
+		{
+			return newinput;
+		}
+	}
+};
+
 //template<class T>
 //void mySwap(T& a, T& b)
 //{
@@ -45,25 +66,6 @@ int main()
 	return 0;
 }
 
-int get_level()
-{
-	int newinput;
-	for (;;)
-	{
-		cout << "please input the level:" << endl;
-		cin >> newinput;
-		if (cin.fail() || newinput <= 1)
-		{
-			cin.clear();
-			cin.ignore(1024, '\n');
-			cout << "incorrect input, please input again!" << endl;
-		}
-		else
-		{
-			return newinput;
-		}
-	}
-}
 void menu() 
 {
 	for (;;)
